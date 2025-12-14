@@ -1,7 +1,7 @@
 # 🎮 Destinée Launcher
 
 <p align="center">
-  <img src="img/sv_logo.png" alt="Logo Destinée" width="200"/>
+  <img src="https://zupimages.net/up/25/50/dtyi.png" alt="Logo Destinée" width="200"/>
 </p>
 
 <p align="center">
