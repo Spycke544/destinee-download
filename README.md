@@ -24,7 +24,7 @@
 
 ## 📥 Téléchargement
 
-### ⬇️ [Télécharger Destinée Launcher](https://github.com/Spycke544/destinee-launcher/releases/latest)
+### ⬇️ [Télécharger Destinée Launcher](https://github.com/Spycke544/destinee-download/releases/latest)
 
 1. Cliquez sur le lien ci-dessus
 2. Téléchargez `Destinée Launcher Setup 1.0.0.exe`
