@@ -11,32 +11,32 @@ jobs:
       - name: Send Discord Notification
         env:
           DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
+          RELEASE_NAME: ${{ github.event.release.name }}
+          RELEASE_TAG: ${{ github.event.release.tag_name }}
+          RELEASE_URL: ${{ github.event.release.html_url }}
         run: |
-          BODY=$(echo '${{ github.event.release.body }}' | sed 's/"/\\"/g' | sed ':a;N;$!ba;s/\n/\\n/g')
-          
           curl -H "Content-Type: application/json" \
             -X POST \
-            -d '{
-              "embeds": [{
-                "title": "🎮 Nouvelle version du Launcher !",
-                "description": "**${{ github.event.release.name }}** est maintenant disponible !",
-                "color": 13214247,
-                "fields": [
+            -d "{
+              \"embeds\": [{
+                \"title\": \"🎮 Nouvelle version du Launcher !\",
+                \"description\": \"**${RELEASE_NAME}** est maintenant disponible !\",
+                \"color\": 13214247,
+                \"fields\": [
                   {
-                    "name": "📋 Changelog",
-                    "value": "'"${BODY:-Pas de description}"'",
-                    "inline": false
+                    \"name\": \"📦 Version\",
+                    \"value\": \"\`${RELEASE_TAG}\`\",
+                    \"inline\": true
                   },
                   {
-                    "name": "📦 Version",
-                    "value": "`${{ github.event.release.tag_name }}`",
-                    "inline": true
+                    \"name\": \"📥 Télécharger\",
+                    \"value\": \"[Cliquez ici](${RELEASE_URL})\",
+                    \"inline\": true
                   }
                 ],
-                "footer": {
-                  "text": "Destinée PVE | PVP"
-                },
-                "url": "${{ github.event.release.html_url }}"
+                \"footer\": {
+                  \"text\": \"Destinée PVE | PVP\"
+                }
               }]
-            }' \
+            }" \
             $DISCORD_WEBHOOK
