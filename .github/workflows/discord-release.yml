@@ -1,0 +1,42 @@
+name: Discord Release Notification
+
+on:
+  release:
+    types: [published]
+
+jobs:
+  notify:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Send Discord Notification
+        env:
+          DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
+        run: |
+          BODY=$(echo '${{ github.event.release.body }}' | sed 's/"/\\"/g' | sed ':a;N;$!ba;s/\n/\\n/g')
+          
+          curl -H "Content-Type: application/json" \
+            -X POST \
+            -d '{
+              "embeds": [{
+                "title": "🎮 Nouvelle version du Launcher !",
+                "description": "**${{ github.event.release.name }}** est maintenant disponible !",
+                "color": 13214247,
+                "fields": [
+                  {
+                    "name": "📋 Changelog",
+                    "value": "'"${BODY:-Pas de description}"'",
+                    "inline": false
+                  },
+                  {
+                    "name": "📦 Version",
+                    "value": "`${{ github.event.release.tag_name }}`",
+                    "inline": true
+                  }
+                ],
+                "footer": {
+                  "text": "Destinée PVE | PVP"
+                },
+                "url": "${{ github.event.release.html_url }}"
+              }]
+            }' \
+            $DISCORD_WEBHOOK
